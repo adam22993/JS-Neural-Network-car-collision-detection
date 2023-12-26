@@ -1,5 +1,5 @@
 class Car{
-    constructor(x, y, width, height, controlType, maxSpeed=3) {
+    constructor(x, y, width, height, controlType, maxSpeed = 3) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -12,16 +12,16 @@ class Car{
         this.angle = 0;
         this.damaged = false;
 
-        this.useBrain = controlType==="AI";
+        this.useBrain = controlType === "AI";
 
-        if(controlType!=="DUMMY"){
+        if(controlType !== "DUMMY"){
             this.sensor = new Sensor(this);
             this.brain = new NeuralNetwork([this.sensor.rayCount, 6, 4]
             );
         }
         this.controls = new Controls(controlType);
     }
-    draw(ctx, color) {
+    draw(ctx, color, drawSensor=false) {
         if(this.damaged){
             ctx.fillStyle = "gray";
         } else {
@@ -49,7 +49,7 @@ class Car{
         }
         ctx.fill();
 
-        if(this.sensor) {
+        if(this.sensor && drawSensor){
             // the car has the responsibility of drawing the sensor
             this.sensor.draw(ctx);
         }
@@ -66,8 +66,8 @@ class Car{
             const offsets = this.sensor.readings.map(
                 s => s === null ? 0 : 1 - s.offset
             );
+
             const outputs = NeuralNetwork.feedForward(offsets, this.brain);
-            console.log(outputs);
 
             if(this.useBrain){
                 this.controls.left = outputs[0];

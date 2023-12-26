@@ -27,7 +27,7 @@ class Visualizer {
                 left,levelTop,
                 width,levelHeight,
                 i===network.levels.length-1
-                    ?['<','>','^','v']
+                    ?['⬅️','➡️','⬆️','⬇️']
                     :[]
             );
         }
@@ -56,7 +56,7 @@ class Visualizer {
             }
         }
 
-        const nodeRadius=18;
+        const nodeRadius=16;
         for(let i=0;i<inputs.length;i++){
             const x=Visualizer.#getNodeX(inputs,i,left,right);
             ctx.beginPath();
