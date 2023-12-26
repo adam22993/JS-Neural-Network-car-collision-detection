@@ -1,0 +1,59 @@
+We are going to talk about how our brains works and how to translate
+that to an artificial neural network. We will also learn about the
+components of this kind of network and how to connect it to the car
+so it can drive itself.
+
+neural networks are computing systems inspired by the biological neural
+networks in our brains. The neurons in our brain are built up by a
+cell body, dendrites and an axon. The dendrites are the input of the
+neuron, the cell body is the processing unit and the axon is the output.
+When stimulated, the dendrites send a signal to the cell body. The cell
+body processes the signal and sends a signal through the axon to other
+neurons. The axon is connected to the dendrites of other neurons. This
+is how the neurons are connected to each other. The connections between
+the neurons are called synapses. The synapses are the weights of the
+neural network. The weights are the most important part of the neural
+network. They determine how the network behaves. The weights are
+multiplied with the input and the result is the output of the neuron.
+
+So a single neuron does something really simple, and intelligence only
+comes when they work as a team. Our brains have about 86 billion neurons
+in the brain alone, we also have quite many of them in our spinal cord
+and sensory organs like our eyes and ears. These sensors send signals to
+some neurons that pass it to the brains. There the processing happens
+like a chain reaction where some neurons fire, some don't, eventually
+signals arriving to motor neurons that pass them through you spinal cord
+and make some muscles contract in very specific ways.
+
+A lot happens in a split second when someone suddenly throws a ball at
+you for example. Sensors inside the ear pick up compression waves from the
+air and send signals to the brain which figures out the direction based on
+different intensities in the two ears. Signals then travel to the neck
+muscles which turn your head in the direction of the sound. The eyes catch
+a glimpse of what's happening and use signals to notify the brain.
+Peripheral vision is blurry, but provides good enough information to
+detect some kind of object approaching and new signals travel to facial
+muscles to contract and protect the eyes from getting hurt. At the sames time
+the brain begins kind of defence protocol by sending signals throughout the
+body. Time passes and the image becomes more clear. The brain does pattern
+matching and recognizes the object as a ball. Contextual and historical
+information will play and important role in what happens next. let's stick
+to the first one. The brain concludes there is no threat and uses knowledge
+about physics it learned during it's lifetime to predict where the  object is
+headed. It then sends new signals to the muscles to contract in a slightly
+different ways to catch the object instead of blocking it. One history where
+the brain did the good thing and not much happens after that. But sometimes
+the brain makes a mistake and the ball hits you in the face. The brain will
+learn from that and next time it will do a better job at predicting the path
+of the ball and the actions needed to catch it properly.
+
+Our car's neural network will do something like that. Neurons on the first
+layer will be connected to the sensors, they will send signals forward a few
+times, and the last layer will be connected to the car controls to make it move.
+We will be working with relatively small networks here, but that ok because we
+actually don't need a very large network to solve this problem.
+
+Now... implementing all this in one shot is... scary indeed. But it's easier
+if you break it into levels. Each level has a floor and a ceiling and connections
+in between. The ceiling of one level is the floor of the next and so on. Now, let's
+start to code one of these levels. 
