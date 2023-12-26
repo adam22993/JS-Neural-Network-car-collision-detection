@@ -19,3 +19,21 @@ function getIntersection(A, B, C, D){ // there is a lesson on this by Radu Marin
         }
     return null;
 }
+
+function polysIntersect(poly1, poly2){
+    for(let i = 0; i < poly1.length; i++){
+        for(let j = 0; j < poly2.length; j++){
+            // we are using % to wrap around the array when we reach the end - to connect the last point to the first point
+            const touch = getIntersection(
+                poly1[i],
+                poly1[(i + 1) % poly1.length],
+                poly2[j],
+                poly2[(j + 1) % poly2.length]
+            );
+            if(touch){
+                return true;
+            }
+        }
+    }
+    return false;
+}
