@@ -1,23 +1,28 @@
 class Car{
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, controlType, maxSpeed=3) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
 
-        this.speed= 0;
+        this.speed = 0;
         this.acceleration = 0.2;
-        this.maxSpeed = 3;
+        this.maxSpeed = maxSpeed;
         this.friction = 0.05;
         this.angle = 0;
         this.damaged = false;
 
-        this.sensor = new Sensor(this);
-        this.controls = new Controls();
+        if(controlType!=="DUMMY"){
+            this.sensor = new Sensor(this);
+        }
+        this.controls = new Controls(controlType);
     }
-    draw(ctx) {
-        ctx.fillStyle = this.damaged ? "gray" : "black";
-
+    draw(ctx, color) {
+        if(this.damaged){
+            ctx.fillStyle = "gray";
+        } else {
+            ctx.fillStyle = color
+        }
         // ctx.save();
         // ctx.translate(this.x, this.y);
         // ctx.rotate(-this.angle);
@@ -40,17 +45,21 @@ class Car{
         }
         ctx.fill();
 
-        this.sensor.draw(ctx); // the car has the responsibility of drawing the sensor
+        if(this.sensor) {
+            // the car has the responsibility of drawing the sensor
+            this.sensor.draw(ctx);
+        }
     }
 
-    update(roadBoarders) {
+    update(roadBoarders, traffic) {
         if(!this.damaged){
             this.#move();
             this.polygon = this.#createPolygon();
-            this.damaged = this.#assessDamage(roadBoarders);
+            this.damaged = this.#assessDamage(roadBoarders, traffic);
         }
-
-        this.sensor.update(roadBoarders);
+        if(this.sensor) {
+            this.sensor.update(roadBoarders, traffic);
+        }
     }
 
     #createPolygon(){
@@ -84,19 +93,24 @@ class Car{
         if (this.controls.reverse) {
             this.speed -= this.acceleration;
         }
-        if(this.speed>this.maxSpeed){ // forward max speed
+        // forward max speed
+        if(this.speed>this.maxSpeed){
             this.speed=this.maxSpeed;
         }
-        if(this.speed<-this.maxSpeed/2){ // reverse max speed is half of forward speed
+        // reverse max speed is half of forward speed
+        if(this.speed<-this.maxSpeed/2){
             this.speed=-this.maxSpeed/2;
         }
-        if(this.speed>0){ // forward friction
+        // forward friction
+        if(this.speed>0){
             this.speed-=this.friction;
         }
-        if(this.speed<0){ // reverse friction
+        // reverse friction
+        if(this.speed<0){
             this.speed+=this.friction;
         }
-        if(Math.abs(this.speed)<this.friction){ // stop if speed is less than friction
+        // stop if speed is less than friction
+        if(Math.abs(this.speed)<this.friction){
             this.speed=0;
         }
         // if(this.controls.left){
@@ -105,7 +119,8 @@ class Car{
         // if(this.controls.right){
         //     this.angle-=0.03;
         // }
-        if(this.speed!==0){ // replacing the above two if statements
+        // replacing the above two if statements with the following:
+        if(this.speed!==0){
             const flip = this.speed>0?1:-1;
             if(this.controls.left){
                 this.angle+=0.03*flip;
@@ -119,7 +134,7 @@ class Car{
     }
 
 
-    #assessDamage(roadBoarders) {
+    #assessDamage(roadBoarders, traffic) {
         // this collision detection is not perfect, but it is good enough for this example
         // the issue that rises here is what happens when the car is moving fast enough to jump over the road boarders?
         // the car will not detect the collision and will not be damaged
@@ -128,6 +143,11 @@ class Car{
         // another solution is to use a different collision detection algorithm
         for(let i = 0; i < roadBoarders.length; i++){
             if(polysIntersect(this.polygon, roadBoarders[i])){
+                return true;
+            }
+        }
+        for(let i = 0; i < traffic.length; i++){
+            if(polysIntersect(this.polygon, traffic[i].polygon)){
                 return true;
             }
         }
